@@ -11,7 +11,7 @@ import { RoleToggle } from './RoleToggle';
  */
 export function Masthead() {
   return (
-    <AppBar position="sticky" elevation={0}>
+    <AppBar position="static" elevation={0}>
       <Toolbar
         disableGutters
         sx={{ minHeight: layout.mastheadHeight, height: layout.mastheadHeight, px: 2, justifyContent: 'space-between' }}

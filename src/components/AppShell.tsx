@@ -7,9 +7,9 @@ import { BottomNav } from './BottomNav';
 
 /**
  * <AppShell> — cadre applicatif commun.
- * Conteneur "téléphone" (max 428px, fond cream) centré sur un fond sombre,
- * avec Masthead sticky en haut et, côté boxeur, BottomNav sticky en bas.
- * Le style billet reste phone-first ; le responsive desktop viendra ensuite.
+ * Conteneur "téléphone" (max 428px, fond cream) centré sur un fond sombre.
+ * Structure d'app mobile : hauteur d'écran fixe, Masthead + BottomNav TOUJOURS
+ * visibles, et seul le contenu (main) défile à l'intérieur.
  */
 export function AppShell({
   children,
@@ -19,22 +19,32 @@ export function AppShell({
   showBottomNav?: boolean;
 }) {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', backgroundColor: '#100c08', minHeight: '100dvh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', backgroundColor: '#100c08', height: '100dvh', overflow: 'hidden' }}>
       <Box
         sx={{
           width: '100%',
           maxWidth: layout.phoneMaxWidth,
-          minHeight: '100dvh',
-          display: 'flex',
-          flexDirection: 'column',
+          height: '100dvh',
+          display: 'grid',
+          // header (auto) / contenu défilant (1fr, peut rétrécir) / nav (auto)
+          gridTemplateRows: showBottomNav ? 'auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr)',
           backgroundColor: colors.cream,
           boxShadow: shadows.frame,
+          overflow: 'hidden',
         }}
       >
+        {/* Toujours visible en haut */}
         <Masthead />
-        <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', animation: 'fcfade .3s ease' }}>
+
+        {/* Seule zone qui défile */}
+        <Box
+          component="main"
+          sx={{ minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', animation: 'fcfade .3s ease' }}
+        >
           {children}
         </Box>
+
+        {/* Toujours visible en bas (rôle boxeur) */}
         {showBottomNav && <BottomNav />}
       </Box>
     </Box>

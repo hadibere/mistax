@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={fontVariables}>
       <body>
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+        <AppRouterCacheProvider>
           <ThemeProvider theme={kruTheme}>
             <CssBaseline />
             {children}

@@ -25,9 +25,6 @@ export function BottomNav() {
     <Box
       component="nav"
       sx={{
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 10,
         height: layout.bottomNavHeight,
         display: 'grid',
         gridTemplateColumns: `repeat(${ITEMS.length}, 1fr)`,
