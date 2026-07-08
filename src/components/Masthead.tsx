@@ -27,7 +27,7 @@ export function Masthead() {
             component="span"
             sx={{ fontFamily: fonts.mono, fontSize: 9.5, letterSpacing: '1.5px', color: colors.red, textTransform: 'uppercase' }}
           >
-            Fight Club Thaï
+            Le Défi Encadré
           </Typography>
         </Box>
         <RoleToggle />
