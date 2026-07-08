@@ -11,10 +11,22 @@ import { boxerById, challenges, coaches } from '@/data/mock-data';
 
 const coach = coaches[0];
 
-/** Défis à signer : en attente (pending) et destinés à un boxeur du coach. */
-const initialToSign = challenges.filter(
-  (c) => c.toId && coach.fighterIds.includes(c.toId) && c.status === 'pending',
-);
+/** Le défi implique-t-il un boxeur du coach ? Dans quel sens ? */
+const isIncoming = (c: (typeof challenges)[number]) =>
+  !!c.toId && coach.fighterIds.includes(c.toId) && c.status === 'pending';
+const isOutgoing = (c: (typeof challenges)[number]) =>
+  coach.fighterIds.includes(c.fromId) && c.status === 'sent';
+
+/** Le boxeur du coach impliqué dans un défi (pour la perspective du ticket). */
+const mineIdOf = (c: (typeof challenges)[number]) =>
+  coach.fighterIds.includes(c.fromId) ? c.fromId : c.toId!;
+
+/**
+ * Défis à signer par le coach, dans les DEUX sens :
+ *  - entrants  (pending) : « DÉFI POUR son boxeur » — à accepter
+ *  - sortants  (sent)    : « DÉFI DE son boxeur »   — à valider avant envoi
+ */
+const initialToSign = challenges.filter((c) => isIncoming(c) || isOutgoing(c));
 
 export default function CoachPage() {
   const [toSign, setToSign] = useState<Challenge[]>(initialToSign);
@@ -33,7 +45,7 @@ export default function CoachPage() {
   };
 
   const myFighters = coach.fighterIds.map(boxerById).filter(Boolean);
-  const pendingFor = (id: string) => toSign.filter((c) => c.toId === id).length;
+  const pendingFor = (id: string) => toSign.filter((c) => mineIdOf(c) === id).length;
 
   return (
     <Screen>
@@ -72,8 +84,9 @@ export default function CoachPage() {
             <ValidationTicket
               key={c.id}
               challenge={c}
-              onSign={(x) => resolve(x, 'Combat signé')}
-              onRefuse={(x) => resolve(x, 'Défi refusé')}
+              mineId={mineIdOf(c)}
+              onSign={(x) => resolve(x, isOutgoing(x) ? 'Défi validé' : 'Combat signé')}
+              onRefuse={(x) => resolve(x, isOutgoing(x) ? 'Envoi annulé' : 'Défi refusé')}
             />
           ))}
         </Stack>

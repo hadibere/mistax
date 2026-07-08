@@ -3,8 +3,8 @@ import { colors, fonts, shadows } from '@/design-system/tokens';
 
 /**
  * <Toast> — notification basse centrée (COMPONENTS.md §11).
- * Fond encre, liseré rouge à gauche, texte cream. Animation fctoast.
- * L'auto-dismiss (3200ms) est géré par l'appelant.
+ * Fond encre, liseré rouge à gauche, texte cream. Affiché immédiatement (visible),
+ * l'auto-dismiss (3200ms) est géré par l'appelant.
  */
 export function Toast({ message }: { message: string }) {
   return (
@@ -28,7 +28,6 @@ export function Toast({ message }: { message: string }) {
         letterSpacing: '.5px',
         textTransform: 'uppercase',
         whiteSpace: 'nowrap',
-        animation: 'fctoast .3s ease',
       }}
     >
       {message}
