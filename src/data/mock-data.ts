@@ -1,4 +1,4 @@
-import type { Boxer, Challenge, Coach, Gym } from '../design-system/types';
+import type { Boxer, Bout, Challenge, Coach, Gym } from '../design-system/types';
 
 /**
  * Données de démo (fictives) reprises des prototypes.
@@ -38,6 +38,38 @@ export const challenges: Challenge[] = [
   { id: 'c4', serial: 'N° 0520', fromId: 'you',     toId: 'idriss', weight: '-71 kg', rounds: '3 × 3 min', level: 'Amateur', date: 'À DÉFINIR',   venue: 'À DÉFINIR',             status: 'sent',     createdAt: '2026-06-25T10:00:00Z' },
 ];
 
+/**
+ * Palmarès de démo. Younes ('you') reprend la capture de référence.
+ * Pour les autres, un palmarès générique est dérivé du bilan (voir boutsOf).
+ */
+export const palmares: Partial<Record<string, Bout[]>> = {
+  you: [
+    { opponentName: 'Rayan Koné', result: 'V', method: 'KO · Round 2', date: 'MAI 26' },
+    { opponentName: 'Sofiane Amrani', result: 'V', method: 'Décision unanime', date: 'MARS 26' },
+    { opponentName: 'Théo Marchand', result: 'D', method: 'Décision partagée', date: 'JAN 26' },
+  ],
+};
+
+const DEMO_METHODS = ['KO · Round 2', 'Décision unanime', 'Arrêt médical', 'Décision partagée'];
+
 /** Helpers de dérivation utiles côté UI. */
 export const recordOf = (b: Boxer) => `${b.wins}-${b.losses}-${b.draws}` as const;
 export const boxerById = (id: string) => boxers.find((b) => b.id === id);
+
+/** Palmarès d'un boxeur : celui défini, sinon un générique dérivé du bilan. */
+export function boutsOf(boxer: Boxer): Bout[] {
+  const defined = palmares[boxer.id];
+  if (defined) return defined;
+
+  const opponents = boxers.filter((b) => b.id !== boxer.id);
+  const total = Math.min(boxer.wins + boxer.losses, 5);
+  return Array.from({ length: total }, (_, i) => {
+    const isWin = i < boxer.wins;
+    return {
+      opponentName: opponents[i % opponents.length]?.name ?? 'Adversaire',
+      result: isWin ? 'V' : 'D',
+      method: DEMO_METHODS[i % DEMO_METHODS.length],
+      date: 'SAISON 26',
+    } satisfies Bout;
+  });
+}

@@ -7,8 +7,11 @@ import { fontVariables } from '@/design-system/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'MistaX — Fight Club Thaï',
+  title: 'MistaX — Le Défi Encadré',
   description: 'Défis de Muay Thaï entre clubs, validés par le coach.',
+  // Site en construction : on empêche l'indexation par les moteurs de recherche.
+  // À retirer au lancement (avec nom de domaine + Search Console).
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
