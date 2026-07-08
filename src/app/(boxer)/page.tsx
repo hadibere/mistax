@@ -1,21 +1,12 @@
-import { Box, Button, Container, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { ChallengeTicket } from '@/components/ChallengeTicket';
-import { colors, fonts, layout } from '@/design-system/tokens';
+import { Screen } from '@/components/Screen';
+import { colors, fonts } from '@/design-system/tokens';
 import { challenges } from '@/data/mock-data';
 
 export default function AffichePage() {
   return (
-    <Container
-      disableGutters
-      sx={{
-        maxWidth: layout.phoneMaxWidth,
-        mx: 'auto',
-        minHeight: '100vh',
-        backgroundColor: colors.cream,
-        px: 2,
-        py: 3,
-      }}
-    >
+    <Screen>
       {/* En-tête d'écran */}
       <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
@@ -41,6 +32,6 @@ export default function AffichePage() {
           <ChallengeTicket key={c.id} challenge={c} />
         ))}
       </Stack>
-    </Container>
+    </Screen>
   );
 }
