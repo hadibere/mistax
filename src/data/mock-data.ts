@@ -55,6 +55,7 @@ const DEMO_METHODS = ['KO · Round 2', 'Décision unanime', 'Arrêt médical', '
 /** Helpers de dérivation utiles côté UI. */
 export const recordOf = (b: Boxer) => `${b.wins}-${b.losses}-${b.draws}` as const;
 export const boxerById = (id: string) => boxers.find((b) => b.id === id);
+export const challengeById = (id: string) => challenges.find((c) => c.id === id);
 
 /** Palmarès d'un boxeur : celui défini, sinon un générique dérivé du bilan. */
 export function boutsOf(boxer: Boxer): Bout[] {

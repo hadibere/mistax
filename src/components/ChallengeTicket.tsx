@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+import Link from 'next/link';
 import { Ticket, Barcode } from '@/design-system/Ticket';
 import { colors, fonts, statusColors } from '@/design-system/tokens';
 import type { Challenge } from '@/design-system/types';
@@ -53,10 +54,10 @@ function Corner({
 
 export function ChallengeTicket({
   challenge,
-  onClick,
+  href,
 }: {
   challenge: Challenge;
-  onClick?: (c: Challenge) => void;
+  href?: string;
 }) {
   const tenant = boxerById(challenge.fromId);
   const challenger = challenge.toId ? boxerById(challenge.toId) : null;
@@ -64,8 +65,13 @@ export function ChallengeTicket({
 
   return (
     <Ticket
-      onClick={onClick ? () => onClick(challenge) : undefined}
-      sx={{ cursor: onClick ? 'pointer' : 'default' }}
+      {...(href ? { component: Link, href } : {})}
+      sx={{
+        display: 'block',
+        cursor: href ? 'pointer' : 'default',
+        textDecoration: 'none',
+        color: 'inherit',
+      }}
     >
       <Ticket.Band bg={band.bg} fg={band.fg}>
         <span>{challenge.date}</span>

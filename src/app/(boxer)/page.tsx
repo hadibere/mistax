@@ -29,7 +29,7 @@ export default function AffichePage() {
       {/* Liste des billets de défi */}
       <Stack spacing={1.875} sx={{ mt: 2.5 }}>
         {challenges.map((c) => (
-          <ChallengeTicket key={c.id} challenge={c} />
+          <ChallengeTicket key={c.id} challenge={c} href={`/defi/${c.id}`} />
         ))}
       </Stack>
     </Screen>

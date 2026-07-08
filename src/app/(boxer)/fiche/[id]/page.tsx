@@ -4,9 +4,14 @@ import { Screen } from '@/components/Screen';
 import { BackLink } from '@/components/BackLink';
 import { colors, fonts } from '@/design-system/tokens';
 import type { Boxer } from '@/design-system/types';
-import { boutsOf, boxerById } from '@/data/mock-data';
+import { boutsOf, boxerById, boxers } from '@/data/mock-data';
 
 const ME = 'you'; // utilisateur courant (Younes)
+
+/** Prérend les fiches mock au build → le build rend réellement la page (garde-fou). */
+export function generateStaticParams() {
+  return boxers.map((b) => ({ id: b.id }));
+}
 
 /** Bandeau de 4 stats sous la licence. */
 function StatsBand({ boxer }: { boxer: Boxer }) {
