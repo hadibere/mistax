@@ -2,6 +2,7 @@
 
 import { createTheme, alpha } from '@mui/material/styles';
 import { colors, fonts, borders, shadows } from './tokens';
+import { LinkBehaviour } from '@/components/NextLink';
 
 /**
  * KRU — Thème MUI (direction "Fight Card").
@@ -75,6 +76,14 @@ export const kruTheme = createTheme({
         },
         body: { backgroundColor: colors.cream },
       },
+    },
+
+    // Branche Next <Link> partout : <Button href> / <Link href> = nav client-side.
+    MuiButtonBase: {
+      defaultProps: { LinkComponent: LinkBehaviour },
+    },
+    MuiLink: {
+      defaultProps: { component: LinkBehaviour },
     },
 
     // Boutons : pleins rouges (Anton) ou outline encre

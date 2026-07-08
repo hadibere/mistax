@@ -22,7 +22,7 @@ export default function AffichePage() {
       <Divider sx={{ borderColor: colors.ink, mt: 1.5 }} />
 
       {/* CTA principal */}
-      <Button variant="contained" color="primary" fullWidth sx={{ mt: 2.5, py: 1.75 }}>
+      <Button href="/lancer" variant="contained" color="primary" fullWidth sx={{ mt: 2.5, py: 1.75 }}>
         + Lancer un défi
       </Button>
 
