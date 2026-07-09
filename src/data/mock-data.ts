@@ -28,7 +28,7 @@ export const boxers: Boxer[] = [
 ];
 
 export const coaches: Coach[] = [
-  { id: 'somchai', name: 'Kru Somchai', gymId: 'sitan-paris', gymName: 'Team Sitan Paris', fighterIds: ['you', 'lina'], acceptanceRate: 0.78 },
+  { id: 'somchai', name: 'Coach Somchai', gymId: 'sitan-paris', gymName: 'Team Sitan Paris', fighterIds: ['you', 'lina'], acceptanceRate: 0.78 },
 ];
 
 export const challenges: Challenge[] = [
