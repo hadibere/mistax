@@ -2,9 +2,12 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { ChallengeTicket } from '@/components/ChallengeTicket';
 import { Screen } from '@/components/Screen';
 import { colors, fonts } from '@/design-system/tokens';
-import { challenges } from '@/data/mock-data';
+import { getBoxers, getChallenges } from '@/lib/queries';
 
-export default function AffichePage() {
+export default async function AffichePage() {
+  const [challenges, boxers] = await Promise.all([getChallenges(), getBoxers()]);
+  const byId = new Map(boxers.map((b) => [b.id, b]));
+
   return (
     <Screen>
       {/* En-tête d'écran */}
@@ -29,7 +32,13 @@ export default function AffichePage() {
       {/* Liste des billets de défi */}
       <Stack spacing={1.875} sx={{ mt: 2.5 }}>
         {challenges.map((c) => (
-          <ChallengeTicket key={c.id} challenge={c} href={`/defi/${c.id}`} />
+          <ChallengeTicket
+            key={c.id}
+            challenge={c}
+            tenant={byId.get(c.fromId) ?? null}
+            challenger={c.toId ? byId.get(c.toId) ?? null : null}
+            href={`/defi/${c.id}`}
+          />
         ))}
       </Stack>
     </Screen>

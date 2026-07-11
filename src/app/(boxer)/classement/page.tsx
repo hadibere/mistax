@@ -2,11 +2,11 @@ import { Divider, Stack, Typography } from '@mui/material';
 import { RankingRow } from '@/components/RankingRow';
 import { Screen } from '@/components/Screen';
 import { colors, fonts } from '@/design-system/tokens';
-import { boxers } from '@/data/mock-data';
+import { getBoxers } from '@/lib/queries';
+import { DEMO_ME } from '@/lib/current-user';
 
-const ME = 'you'; // utilisateur courant (Younes)
-
-export default function ClassementPage() {
+export default async function ClassementPage() {
+  const boxers = await getBoxers();
   const ranked = [...boxers].sort((a, b) => a.rank - b.rank);
 
   return (
@@ -21,7 +21,7 @@ export default function ClassementPage() {
 
       <Stack spacing={1.25} sx={{ mt: 2.5 }}>
         {ranked.map((b) => (
-          <RankingRow key={b.id} boxer={b} isMe={b.id === ME} />
+          <RankingRow key={b.id} boxer={b} isMe={b.id === DEMO_ME} />
         ))}
       </Stack>
     </Screen>

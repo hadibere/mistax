@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
 import { LancerFlow } from '@/components/LancerFlow';
+import { getBoxers } from '@/lib/queries';
 
-export default function LancerPage() {
+export default async function LancerPage() {
+  const boxers = await getBoxers();
   return (
     <Suspense>
-      <LancerFlow />
+      <LancerFlow boxers={boxers} />
     </Suspense>
   );
 }

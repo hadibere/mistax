@@ -4,14 +4,9 @@ import { Screen } from '@/components/Screen';
 import { BackLink } from '@/components/BackLink';
 import { colors, fonts } from '@/design-system/tokens';
 import type { Boxer } from '@/design-system/types';
-import { boutsOf, boxerById, boxers } from '@/data/mock-data';
-
-const ME = 'you'; // utilisateur courant (Younes)
-
-/** Prérend les fiches mock au build → le build rend réellement la page (garde-fou). */
-export function generateStaticParams() {
-  return boxers.map((b) => ({ id: b.id }));
-}
+import { boutsOf } from '@/data/mock-data';
+import { getBoxer } from '@/lib/queries';
+import { DEMO_ME } from '@/lib/current-user';
 
 /** Bandeau de 4 stats sous la licence. */
 function StatsBand({ boxer }: { boxer: Boxer }) {
@@ -78,7 +73,7 @@ function BoutRow({ opponentName, result, method, date }: ReturnType<typeof bouts
 
 export default async function FichePage({ params }: PageProps<'/fiche/[id]'>) {
   const { id } = await params;
-  const boxer = boxerById(id);
+  const boxer = await getBoxer(id);
 
   if (!boxer) {
     return (
@@ -92,7 +87,7 @@ export default async function FichePage({ params }: PageProps<'/fiche/[id]'>) {
   }
 
   const bouts = boutsOf(boxer);
-  const isMe = boxer.id === ME;
+  const isMe = boxer.id === DEMO_ME;
   const firstName = boxer.name.split(' ')[0];
 
   return (

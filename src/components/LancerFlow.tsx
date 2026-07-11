@@ -7,9 +7,9 @@ import { Screen } from '@/components/Screen';
 import { BackLink } from '@/components/BackLink';
 import { colors, fonts } from '@/design-system/tokens';
 import type { Boxer, FightLevel, RoundsFormat } from '@/design-system/types';
-import { boxerById, boxers, recordOf } from '@/data/mock-data';
+import { recordOf } from '@/data/mock-data';
+import { DEMO_ME } from '@/lib/current-user';
 
-const ME = 'you'; // utilisateur courant (Younes)
 const ROUNDS: RoundsFormat[] = ['3 × 3 min', '5 × 3 min'];
 const LEVELS: FightLevel[] = ['Amateur', 'Pro-Am', 'Pro'];
 
@@ -58,16 +58,17 @@ function ChoiceGroup<T extends string>({ options, value, onChange }: { options: 
   );
 }
 
-export function LancerFlow() {
+export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
   const params = useSearchParams();
-  const preOpponent = params.get('adversaire') ? boxerById(params.get('adversaire')!) : null;
+  const advId = params.get('adversaire');
+  const preOpponent = advId ? boxers.find((b) => b.id === advId) ?? null : null;
 
-  const [opponent, setOpponent] = useState<Boxer | null>(preOpponent ?? null);
+  const [opponent, setOpponent] = useState<Boxer | null>(preOpponent);
   const [step, setStep] = useState<1 | 2 | 3>(preOpponent ? 2 : 1);
   const [rounds, setRounds] = useState<RoundsFormat>('3 × 3 min');
   const [level, setLevel] = useState<FightLevel>('Amateur');
 
-  const opponents = boxers.filter((b) => b.id !== ME);
+  const opponents = boxers.filter((b) => b.id !== DEMO_ME);
 
   // --- Étape 1 : choix de l'adversaire ---
   if (step === 1) {

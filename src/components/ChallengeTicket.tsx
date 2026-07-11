@@ -4,8 +4,7 @@ import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import { Ticket, Barcode } from '@/design-system/Ticket';
 import { colors, fonts, statusColors } from '@/design-system/tokens';
-import type { Challenge } from '@/design-system/types';
-import { boxerById } from '@/data/mock-data';
+import type { Boxer, Challenge } from '@/design-system/types';
 
 /** Libellé de statut affiché dans la bande de tête. */
 const statusLabel: Record<Challenge['status'], string> = {
@@ -54,13 +53,15 @@ function Corner({
 
 export function ChallengeTicket({
   challenge,
+  tenant,
+  challenger,
   href,
 }: {
   challenge: Challenge;
+  tenant?: Boxer | null;
+  challenger?: Boxer | null;
   href?: string;
 }) {
-  const tenant = boxerById(challenge.fromId);
-  const challenger = challenge.toId ? boxerById(challenge.toId) : null;
   const band = statusColors[challenge.status as keyof typeof statusColors] ?? statusColors.sent;
 
   return (

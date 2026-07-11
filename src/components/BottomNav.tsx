@@ -4,18 +4,20 @@ import { Box } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { colors, fonts, layout } from '@/design-system/tokens';
+import { DEMO_ME } from '@/lib/current-user';
 
 /**
  * <BottomNav> — navigation basse, rôle boxeur uniquement (COMPONENTS.md §4).
  * Fond encre + liseré rouge en haut, typo seule (pas d'icônes).
  * L'onglet actif reprend un liseré rouge qui chevauche la bordure.
+ * L'onglet Fiche pointe vers la fiche de l'utilisateur courant (DEMO_ME pour l'instant).
  */
 
 const ITEMS = [
   { label: 'Affiche', href: '/', match: (p: string) => p === '/' },
   { label: 'Boxeurs', href: '/boxeurs', match: (p: string) => p.startsWith('/boxeurs') },
   { label: 'Rang', href: '/classement', match: (p: string) => p.startsWith('/classement') },
-  { label: 'Fiche', href: '/fiche/you', match: (p: string) => p.startsWith('/fiche') },
+  { label: 'Fiche', href: `/fiche/${DEMO_ME}`, match: (p: string) => p.startsWith('/fiche') },
 ] as const;
 
 export function BottomNav() {

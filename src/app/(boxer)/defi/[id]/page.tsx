@@ -5,14 +5,8 @@ import { Screen } from '@/components/Screen';
 import { BackLink } from '@/components/BackLink';
 import { colors, fonts } from '@/design-system/tokens';
 import type { Challenge, TimelineStep } from '@/design-system/types';
-import { boxerById, challengeById, challenges } from '@/data/mock-data';
-
-const ME = 'you'; // utilisateur courant (Younes)
-
-/** Prérend les défis mock au build → le build rend réellement la page (garde-fou). */
-export function generateStaticParams() {
-  return challenges.map((c) => ({ id: c.id }));
-}
+import { getBoxer, getChallenge } from '@/lib/queries';
+import { DEMO_ME } from '@/lib/current-user';
 
 /** Étapes de suivi dérivées du statut du défi. */
 function timelineFor(status: Challenge['status']): TimelineStep[] {
@@ -57,7 +51,7 @@ function Timeline({ steps }: { steps: TimelineStep[] }) {
 
 /** Zone d'action selon le statut et le rôle du spectateur. */
 function ActionZone({ challenge }: { challenge: Challenge }) {
-  const isIncoming = challenge.toId === ME; // je suis le défié
+  const isIncoming = challenge.toId === DEMO_ME; // je suis le défié
 
   if (challenge.status === 'accepted') {
     return (
@@ -105,16 +99,18 @@ function ActionZone({ challenge }: { challenge: Challenge }) {
 
 export default async function DefiPage({ params }: PageProps<'/defi/[id]'>) {
   const { id } = await params;
-  const challenge = challengeById(id);
+  const challenge = await getChallenge(id);
   if (!challenge) notFound();
 
-  const tenant = boxerById(challenge.fromId);
-  const challenger = challenge.toId ? boxerById(challenge.toId) : null;
+  const [tenant, challenger] = await Promise.all([
+    getBoxer(challenge.fromId),
+    challenge.toId ? getBoxer(challenge.toId) : Promise.resolve(null),
+  ]);
 
   return (
     <Screen>
       <BackLink label="La Carte" href="/" />
-      <FightPoster challenge={challenge} tenant={tenant} challenger={challenger} />
+      <FightPoster challenge={challenge} tenant={tenant ?? undefined} challenger={challenger} />
       <Timeline steps={timelineFor(challenge.status)} />
       <ActionZone challenge={challenge} />
     </Screen>
