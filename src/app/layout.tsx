@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
-import { kruTheme } from '@/design-system/theme';
+import { mistaxTheme } from '@/design-system/neon/theme';
+import { neonFontVariables } from '@/design-system/neon/fonts';
 import { fontVariables } from '@/design-system/fonts';
 import './globals.css';
 
@@ -20,10 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={fontVariables}>
+    <html lang="fr" className={`${neonFontVariables} ${fontVariables}`}>
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={kruTheme}>
+          <ThemeProvider theme={mistaxTheme}>
             <CssBaseline />
             {children}
           </ThemeProvider>
