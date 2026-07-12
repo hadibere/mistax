@@ -3,14 +3,14 @@
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { colors, fonts, layout } from '@/design-system/tokens';
+import { colors, fonts } from '@/design-system/neon/tokens';
+import { layout } from '@/design-system/tokens';
 import { DEMO_ME } from '@/lib/current-user';
 
 /**
- * <BottomNav> — navigation basse, rôle boxeur uniquement (COMPONENTS.md §4).
- * Fond encre + liseré rouge en haut, typo seule (pas d'icônes).
- * L'onglet actif reprend un liseré rouge qui chevauche la bordure.
- * L'onglet Fiche pointe vers la fiche de l'utilisateur courant (DEMO_ME pour l'instant).
+ * <BottomNav> — navigation basse, rôle boxeur uniquement (« Néon Arena »).
+ * Fond sombre + liseré néon en haut, typo seule (pas d'icônes).
+ * L'onglet actif s'allume en néon (texte + liseré). Fiche → utilisateur courant.
  */
 
 const ITEMS = [
@@ -30,8 +30,8 @@ export function BottomNav() {
         height: layout.bottomNavHeight,
         display: 'grid',
         gridTemplateColumns: `repeat(${ITEMS.length}, 1fr)`,
-        backgroundColor: colors.ink,
-        borderTop: `3px solid ${colors.red}`,
+        backgroundColor: colors.bg,
+        borderTop: `1px solid ${colors.neonLineSoft}`,
       }}
     >
       {ITEMS.map((item) => {
@@ -45,14 +45,15 @@ export function BottomNav() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontFamily: fonts.ui,
+              fontFamily: fonts.action,
               fontWeight: 700,
-              fontSize: 12.5,
-              letterSpacing: '1px',
+              fontSize: 12,
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: active ? colors.cream : colors.onInkFaint,
-              borderTop: active ? `3px solid ${colors.red}` : '3px solid transparent',
-              mt: '-3px',
+              color: active ? colors.neonText : colors.textMuted,
+              borderTop: active ? `2px solid ${colors.neon}` : '2px solid transparent',
+              mt: '-1px',
+              textShadow: active ? colors.neon && '0 0 12px rgba(120,245,60,0.45)' : 'none',
             }}
           >
             {item.label}

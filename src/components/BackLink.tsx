@@ -2,7 +2,7 @@
 
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts } from '@/design-system/neon/tokens';
 
 /**
  * <BackLink> — retour arrière explicite dans l'UI (ex. « ← LA CARTE »).
@@ -30,14 +30,14 @@ export function BackLink({ label = 'Retour', href }: { label?: string; href?: st
         alignItems: 'center',
         gap: 0.75,
         cursor: 'pointer',
-        fontFamily: fonts.ui,
-        fontWeight: 700,
+        fontFamily: fonts.action,
+        fontWeight: 600,
         fontSize: 12.5,
-        letterSpacing: '1px',
+        letterSpacing: '0.14em',
         textTransform: 'uppercase',
-        color: colors.ink,
+        color: colors.neonText,
         mb: 2,
-        '&:hover': { color: colors.red },
+        '&:hover': { color: colors.neon },
       }}
     >
       ← {label}
