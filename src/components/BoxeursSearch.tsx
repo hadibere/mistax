@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { Divider, OutlinedInput, Stack, Typography } from '@mui/material';
 import { FighterCard } from '@/components/FighterCard';
 import { Screen } from '@/components/Screen';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts } from '@/design-system/neon/tokens';
 import type { Boxer } from '@/design-system/types';
 
 /** Recherche client sur la liste des combattants (nom / club / ville). */
@@ -25,10 +25,10 @@ export function BoxeursSearch({ boxers, meId }: { boxers: Boxer[]; meId: string 
 
   return (
     <Screen>
-      <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
+      <Typography component="h1" sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 34, color: colors.text, textTransform: 'uppercase', lineHeight: 1 }}>
         Les Combattants
       </Typography>
-      <Divider sx={{ borderColor: colors.ink, mt: 1.5 }} />
+      <Divider sx={{ borderColor: colors.hairline, mt: 1.5 }} />
 
       <OutlinedInput
         fullWidth
@@ -39,7 +39,7 @@ export function BoxeursSearch({ boxers, meId }: { boxers: Boxer[]; meId: string 
       />
 
       {results.length === 0 ? (
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 13, color: colors.muted, mt: 3, textTransform: 'uppercase' }}>
+        <Typography sx={{ fontFamily: fonts.data, fontSize: 13, color: colors.textMuted, mt: 3, textTransform: 'uppercase' }}>
           Aucun combattant ne correspond.
         </Typography>
       ) : (
