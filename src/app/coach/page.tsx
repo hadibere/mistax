@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { ValidationTicket } from '@/components/ValidationTicket';
 import { Toast } from '@/components/Toast';
 import { Screen } from '@/components/Screen';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts, gradients, borders, radius } from '@/design-system/neon/tokens';
 import type { Challenge } from '@/design-system/types';
 import { boxerById, challenges, coaches } from '@/data/mock-data';
 
@@ -50,31 +50,32 @@ export default function CoachPage() {
   return (
     <Screen>
       {/* En-tête coach */}
-      <Box sx={{ backgroundColor: colors.ink, p: 2 }}>
-        <Typography sx={{ fontFamily: fonts.mono, fontSize: 10, letterSpacing: '1.5px', color: colors.amber, textTransform: 'uppercase' }}>
+      <Box sx={{ position: 'relative', background: gradients.card, border: borders.card, borderRadius: `${radius.card}px`, overflow: 'hidden', p: 2 }}>
+        <Box sx={{ position: 'absolute', top: -40, right: -40, width: 150, height: 150, background: gradients.ambient, pointerEvents: 'none' }} />
+        <Typography sx={{ fontFamily: fonts.action, fontWeight: 600, fontSize: 10, letterSpacing: '0.16em', color: colors.neonText, textTransform: 'uppercase', position: 'relative' }}>
           Espace coach — tu signes les combats
         </Typography>
-        <Typography sx={{ fontFamily: fonts.display, fontSize: 30, color: colors.cream, textTransform: 'uppercase', mt: 0.5, lineHeight: 0.95 }}>
+        <Typography sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 30, color: colors.text, textTransform: 'uppercase', mt: 0.5, lineHeight: 0.95, position: 'relative' }}>
           {coach.name}
         </Typography>
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 12, color: colors.onInkMuted, textTransform: 'uppercase', mt: 0.5 }}>
+        <Typography sx={{ fontFamily: fonts.data, fontSize: 12, color: colors.textMuted, textTransform: 'uppercase', mt: 0.5, position: 'relative' }}>
           {coach.gymName} · {coach.fighterIds.length} boxeurs
         </Typography>
       </Box>
 
       {/* À SIGNER */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 3, mb: 1.5 }}>
-        <Typography variant="h4" component="h2" sx={{ color: colors.ink }}>
+        <Typography component="h2" sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 26, color: colors.text, textTransform: 'uppercase' }}>
           À signer
         </Typography>
-        <Box sx={{ minWidth: 34, height: 34, px: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.red }}>
-          <Typography sx={{ fontFamily: fonts.display, fontSize: 18, color: colors.cream }}>{toSign.length}</Typography>
+        <Box sx={{ minWidth: 34, height: 34, px: 1, borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.neon }}>
+          <Typography sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 18, color: colors.onNeon }}>{toSign.length}</Typography>
         </Box>
       </Box>
 
       {toSign.length === 0 ? (
-        <Box sx={{ border: `1.5px solid ${colors.ink}`, p: 2.5, textAlign: 'center' }}>
-          <Typography sx={{ fontFamily: fonts.ui, fontSize: 13, fontWeight: 600, color: colors.muted, textTransform: 'uppercase' }}>
+        <Box sx={{ border: borders.card, borderRadius: `${radius.lg}px`, p: 2.5, textAlign: 'center' }}>
+          <Typography sx={{ fontFamily: fonts.data, fontSize: 13, fontWeight: 600, color: colors.textMuted, textTransform: 'uppercase' }}>
             Rien à signer. Tes boxeurs sont à jour.
           </Typography>
         </Box>
@@ -93,10 +94,10 @@ export default function CoachPage() {
       )}
 
       {/* MES BOXEURS */}
-      <Typography variant="h4" component="h2" sx={{ color: colors.ink, mt: 4, mb: 1.5 }}>
+      <Typography component="h2" sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 26, color: colors.text, textTransform: 'uppercase', mt: 4, mb: 1.5 }}>
         Mes boxeurs
       </Typography>
-      <Box sx={{ border: `1.5px solid ${colors.ink}` }}>
+      <Box sx={{ border: borders.card, borderRadius: `${radius.lg}px`, overflow: 'hidden' }}>
         {myFighters.map((b, i) => {
           const n = pendingFor(b!.id);
           return (
@@ -112,20 +113,21 @@ export default function CoachPage() {
               }}
             >
               <Box>
-                <Typography sx={{ fontFamily: fonts.display, fontSize: 19, color: colors.ink, textTransform: 'uppercase', lineHeight: 1 }}>
+                <Typography sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 19, color: colors.text, textTransform: 'uppercase', lineHeight: 1 }}>
                   {b!.name}
                 </Typography>
-                <Typography sx={{ fontFamily: fonts.ui, fontSize: 11, color: colors.muted, textTransform: 'uppercase', mt: 0.25 }}>
+                <Typography sx={{ fontFamily: fonts.data, fontSize: 11, color: colors.textMuted, textTransform: 'uppercase', mt: 0.25 }}>
                   {b!.gymName} · {b!.weight}
                 </Typography>
               </Box>
               <Typography
                 sx={{
-                  fontFamily: fonts.mono,
+                  fontFamily: fonts.action,
+                  fontWeight: 700,
                   fontSize: 9,
-                  letterSpacing: '.5px',
+                  letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: n > 0 ? colors.red : colors.muted,
+                  color: n > 0 ? colors.neonText : colors.textMuted,
                 }}
               >
                 {n > 0 ? `${n} à signer` : 'À jour'}

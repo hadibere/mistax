@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
-import { colors, fonts, shadows } from '@/design-system/tokens';
+import { colors, fonts, glow } from '@/design-system/neon/tokens';
 
 /**
- * <Toast> — notification basse centrée (COMPONENTS.md §11).
- * Fond encre, liseré rouge à gauche, texte cream. Affiché immédiatement (visible),
+ * <Toast> — notification basse centrée (« Néon Arena »).
+ * Fond sombre, liseré néon à gauche, texte clair. Affiché immédiatement ;
  * l'auto-dismiss (3200ms) est géré par l'appelant.
  */
 export function Toast({ message }: { message: string }) {
@@ -16,16 +16,17 @@ export function Toast({ message }: { message: string }) {
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 1300,
-        backgroundColor: colors.ink,
-        color: colors.cream,
-        borderLeft: `4px solid ${colors.red}`,
+        backgroundColor: colors.raised,
+        color: colors.text,
+        borderLeft: `3px solid ${colors.neon}`,
+        borderRadius: '8px',
         px: 2,
         py: 1.5,
-        boxShadow: shadows.toast,
-        fontFamily: fonts.ui,
+        boxShadow: glow.md,
+        fontFamily: fonts.action,
         fontWeight: 600,
         fontSize: 13,
-        letterSpacing: '.5px',
+        letterSpacing: '0.06em',
         textTransform: 'uppercase',
         whiteSpace: 'nowrap',
       }}

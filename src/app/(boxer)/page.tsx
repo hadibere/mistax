@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import { ChallengeTicket } from '@/components/ChallengeTicket';
+import { ChallengeCard } from '@/components/ChallengeCard';
 import { Screen } from '@/components/Screen';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts } from '@/design-system/neon/tokens';
 import { getBoxers, getChallenges } from '@/lib/queries';
 
 export default async function AffichePage() {
@@ -12,27 +12,27 @@ export default async function AffichePage() {
     <Screen>
       {/* En-tête d'écran */}
       <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
+        <Typography component="h1" sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 34, color: colors.text, textTransform: 'uppercase', lineHeight: 1 }}>
           La Carte
         </Typography>
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 11.5, fontWeight: 700, letterSpacing: '1px', color: colors.muted }}>
-          SAISON 2026
+        <Typography sx={{ fontFamily: fonts.action, fontSize: 11, fontWeight: 600, letterSpacing: '0.16em', color: colors.textMuted, textTransform: 'uppercase' }}>
+          Saison 2026
         </Typography>
       </Box>
-      <Typography sx={{ fontFamily: fonts.ui, fontSize: 13, fontWeight: 600, color: colors.muted, mt: 0.5, textTransform: 'uppercase' }}>
+      <Typography sx={{ fontFamily: fonts.data, fontSize: 13, fontWeight: 600, color: colors.textMuted, mt: 0.75, textTransform: 'uppercase' }}>
         Team Sitan Paris · {challenges.length} combats à l'affiche
       </Typography>
-      <Divider sx={{ borderColor: colors.ink, mt: 1.5 }} />
+      <Divider sx={{ borderColor: colors.hairline, mt: 1.5 }} />
 
-      {/* CTA principal */}
-      <Button href="/lancer" variant="contained" color="primary" fullWidth sx={{ mt: 2.5, py: 1.75 }}>
+      {/* CTA principal (bouton néon glossy via le thème) */}
+      <Button href="/lancer" fullWidth sx={{ mt: 2.5 }}>
         + Lancer un défi
       </Button>
 
-      {/* Liste des billets de défi */}
-      <Stack spacing={1.875} sx={{ mt: 2.5 }}>
+      {/* Liste des cartes de défi (compactes) */}
+      <Stack spacing={1.5} sx={{ mt: 2.5 }}>
         {challenges.map((c) => (
-          <ChallengeTicket
+          <ChallengeCard
             key={c.id}
             challenge={c}
             tenant={byId.get(c.fromId) ?? null}

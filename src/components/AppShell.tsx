@@ -1,15 +1,15 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { colors, layout, shadows } from '@/design-system/tokens';
+import { colors } from '@/design-system/neon/tokens';
+import { layout } from '@/design-system/tokens';
 import { Masthead } from './Masthead';
 import { BottomNav } from './BottomNav';
 
 /**
- * <AppShell> — cadre applicatif commun.
- * Conteneur "téléphone" (max 428px, fond cream) centré sur un fond sombre.
- * Structure d'app mobile : hauteur d'écran fixe, Masthead + BottomNav TOUJOURS
- * visibles, et seul le contenu (main) défile à l'intérieur.
+ * <AppShell> — cadre applicatif commun (« Néon Arena »).
+ * Conteneur "téléphone" centré ; le fond d'arène (dégradé néon) vient du <body>
+ * (thème). Masthead + BottomNav toujours visibles ; seul le contenu défile.
  */
 export function AppShell({
   children,
@@ -19,32 +19,25 @@ export function AppShell({
   showBottomNav?: boolean;
 }) {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', backgroundColor: '#100c08', height: '100dvh', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', height: '100dvh', overflow: 'hidden' }}>
       <Box
         sx={{
           width: '100%',
           maxWidth: layout.phoneMaxWidth,
           height: '100dvh',
           display: 'grid',
-          // header (auto) / contenu défilant (1fr, peut rétrécir) / nav (auto)
           gridTemplateRows: showBottomNav ? 'auto minmax(0, 1fr) auto' : 'auto minmax(0, 1fr)',
-          backgroundColor: colors.cream,
-          boxShadow: shadows.frame,
           overflow: 'hidden',
+          borderLeft: `1px solid ${colors.hairline}`,
+          borderRight: `1px solid ${colors.hairline}`,
         }}
       >
-        {/* Toujours visible en haut */}
         <Masthead />
 
-        {/* Seule zone qui défile */}
-        <Box
-          component="main"
-          sx={{ minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', animation: 'fcfade .3s ease' }}
-        >
+        <Box component="main" sx={{ minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
           {children}
         </Box>
 
-        {/* Toujours visible en bas (rôle boxeur) */}
         {showBottomNav && <BottomNav />}
       </Box>
     </Box>

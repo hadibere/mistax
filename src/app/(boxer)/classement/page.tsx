@@ -1,7 +1,7 @@
 import { Divider, Stack, Typography } from '@mui/material';
 import { RankingRow } from '@/components/RankingRow';
 import { Screen } from '@/components/Screen';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts } from '@/design-system/neon/tokens';
 import { getBoxers } from '@/lib/queries';
 import { DEMO_ME } from '@/lib/current-user';
 
@@ -11,13 +11,13 @@ export default async function ClassementPage() {
 
   return (
     <Screen>
-      <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
+      <Typography component="h1" sx={{ fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', fontSize: 34, color: colors.text, textTransform: 'uppercase', lineHeight: 1 }}>
         Le Classement
       </Typography>
-      <Typography sx={{ fontFamily: fonts.ui, fontSize: 13, fontWeight: 600, color: colors.muted, mt: 0.5, textTransform: 'uppercase' }}>
+      <Typography sx={{ fontFamily: fonts.data, fontSize: 13, fontWeight: 600, color: colors.textMuted, mt: 0.75, textTransform: 'uppercase' }}>
         Régional · toutes catégories
       </Typography>
-      <Divider sx={{ borderColor: colors.ink, mt: 1.5 }} />
+      <Divider sx={{ borderColor: colors.hairline, mt: 1.5 }} />
 
       <Stack spacing={1.25} sx={{ mt: 2.5 }}>
         {ranked.map((b) => (
