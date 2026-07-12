@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { Screen } from '@/components/Screen';
 import { BackLink } from '@/components/BackLink';
-import { colors, fonts } from '@/design-system/tokens';
+import { colors, fonts, gradients, borders, radius } from '@/design-system/neon/tokens';
 import type { Boxer, FightLevel, RoundsFormat } from '@/design-system/types';
 import { recordOf } from '@/data/mock-data';
 import { DEMO_ME } from '@/lib/current-user';
@@ -13,10 +13,11 @@ import { DEMO_ME } from '@/lib/current-user';
 const ROUNDS: RoundsFormat[] = ['3 × 3 min', '5 × 3 min'];
 const LEVELS: FightLevel[] = ['Amateur', 'Pro-Am', 'Pro'];
 
-/** Petit label de section (mono). */
+const titleSx = { fontFamily: fonts.display, fontWeight: 800, fontStyle: 'italic', color: colors.text, textTransform: 'uppercase', lineHeight: 1 } as const;
+
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <Typography sx={{ fontFamily: fonts.mono, fontSize: 9, letterSpacing: '1.5px', color: colors.muted, textTransform: 'uppercase', mb: 1 }}>
+    <Typography sx={{ fontFamily: fonts.action, fontWeight: 600, fontSize: 9, letterSpacing: '0.16em', color: colors.textMuted, textTransform: 'uppercase', mb: 1 }}>
       {children}
     </Typography>
   );
@@ -25,7 +26,7 @@ function Label({ children }: { children: React.ReactNode }) {
 /** Sélecteur segmenté (rounds / niveau). */
 function ChoiceGroup<T extends string>({ options, value, onChange }: { options: T[]; value: T; onChange: (v: T) => void }) {
   return (
-    <Box sx={{ display: 'flex', border: `1.5px solid ${colors.ink}` }}>
+    <Box sx={{ display: 'flex', border: `1px solid ${colors.neonLineSoft}`, borderRadius: `${radius.md}px`, overflow: 'hidden' }}>
       {options.map((opt, i) => {
         const active = opt === value;
         return (
@@ -40,14 +41,15 @@ function ChoiceGroup<T extends string>({ options, value, onChange }: { options: 
               py: 1.25,
               cursor: 'pointer',
               userSelect: 'none',
-              backgroundColor: active ? colors.ink : 'transparent',
-              color: active ? colors.cream : colors.ink,
-              borderLeft: i > 0 ? `1.5px solid ${colors.ink}` : 'none',
-              fontFamily: fonts.ui,
+              backgroundColor: active ? colors.neon : 'transparent',
+              color: active ? colors.onNeon : colors.textMuted,
+              borderLeft: i > 0 ? `1px solid ${colors.neonLineSoft}` : 'none',
+              fontFamily: fonts.action,
               fontWeight: 700,
               fontSize: 12,
-              letterSpacing: '.5px',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
+              transition: 'background-color .15s, color .15s',
             }}
           >
             {opt}
@@ -75,9 +77,7 @@ export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
     return (
       <Screen>
         <BackLink label="La Carte" href="/" />
-        <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
-          Lancer un défi
-        </Typography>
+        <Typography component="h1" sx={{ ...titleSx, fontSize: 34 }}>Lancer un défi</Typography>
         <Label>Étape 1 · Adversaire</Label>
 
         <Stack spacing={1.25} sx={{ mt: 1 }}>
@@ -85,33 +85,28 @@ export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
             <Box
               key={b.id}
               role="button"
-              onClick={() => {
-                setOpponent(b);
-                setStep(2);
-              }}
+              onClick={() => { setOpponent(b); setStep(2); }}
               sx={{
-                border: `1.5px solid ${colors.ink}`,
-                backgroundColor: colors.paper,
+                background: gradients.card,
+                border: borders.card,
+                borderRadius: `${radius.lg}px`,
                 p: 1.5,
                 cursor: 'pointer',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 1,
-                '&:hover': { backgroundColor: colors.paperAlt },
+                transition: 'border-color .15s',
+                '&:hover': { borderColor: colors.neonLine },
               }}
             >
               <Box sx={{ minWidth: 0 }}>
-                <Typography sx={{ fontFamily: fonts.display, fontSize: 20, color: colors.ink, textTransform: 'uppercase', lineHeight: 1 }}>
-                  {b.name}
-                </Typography>
-                <Typography sx={{ fontFamily: fonts.ui, fontSize: 11, color: colors.muted, textTransform: 'uppercase', mt: 0.25 }}>
+                <Typography sx={{ ...titleSx, fontSize: 20 }}>{b.name}</Typography>
+                <Typography sx={{ fontFamily: fonts.data, fontSize: 11, color: colors.textMuted, textTransform: 'uppercase', mt: 0.25 }}>
                   {b.gymName} · {b.weight}
                 </Typography>
               </Box>
-              <Typography sx={{ fontFamily: fonts.display, fontSize: 18, color: colors.ink, flexShrink: 0 }}>
-                {recordOf(b)}
-              </Typography>
+              <Typography sx={{ ...titleSx, fontSize: 18, flexShrink: 0 }}>{recordOf(b)}</Typography>
             </Box>
           ))}
         </Stack>
@@ -124,16 +119,13 @@ export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
     return (
       <Screen>
         <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Typography variant="h2" component="h1" sx={{ color: colors.red }}>
+          <Typography component="h1" sx={{ ...titleSx, fontSize: 44, color: colors.neonText, textShadow: '0 0 20px rgba(120,245,60,0.5)' }}>
             Défi envoyé
           </Typography>
-          <Typography sx={{ fontFamily: fonts.ui, fontSize: 14, fontWeight: 500, color: colors.inkSoft, mt: 2 }}>
-            Ton défi contre <b>{opponent?.name}</b> part d’abord à <b>ton coach</b> pour validation, puis au coach adverse.
-            Un combat n’est officiel que quand les deux coachs ont signé.
+          <Typography sx={{ fontFamily: fonts.data, fontSize: 14, fontWeight: 500, color: colors.textMuted, mt: 2, lineHeight: 1.5 }}>
+            Ton défi contre <Box component="b" sx={{ color: colors.text }}>{opponent?.name}</Box> part d’abord à <Box component="b" sx={{ color: colors.neonText }}>ton coach</Box> pour validation, puis au coach adverse. Un combat n’est officiel que quand les deux coachs ont signé.
           </Typography>
-          <Button href="/" variant="contained" color="primary" fullWidth sx={{ mt: 4, py: 1.75 }}>
-            Retour à l’affiche
-          </Button>
+          <Button href="/" fullWidth sx={{ mt: 4 }}>Retour à l’affiche</Button>
         </Box>
       </Screen>
     );
@@ -142,7 +134,6 @@ export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
   // --- Étape 2 : conditions ---
   return (
     <Screen>
-      {/* Un seul retour : vers Les Combattants si pré-sélection, sinon vers l'étape 1 */}
       {preOpponent ? (
         <BackLink label="Les Combattants" href="/boxeurs" />
       ) : (
@@ -151,60 +142,51 @@ export function LancerFlow({ boxers }: { boxers: Boxer[] }) {
           tabIndex={0}
           onClick={() => setStep(1)}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setStep(1); } }}
-          sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, cursor: 'pointer', fontFamily: fonts.ui, fontWeight: 700, fontSize: 12.5, letterSpacing: '1px', textTransform: 'uppercase', color: colors.ink, mb: 2, '&:hover': { color: colors.red } }}
+          sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, cursor: 'pointer', fontFamily: fonts.action, fontWeight: 600, fontSize: 12.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: colors.neonText, mb: 2, '&:hover': { color: colors.neon } }}
         >
           ← Adversaire
         </Box>
       )}
 
-      <Typography variant="h3" component="h1" sx={{ color: colors.ink }}>
-        Lancer un défi
-      </Typography>
+      <Typography component="h1" sx={{ ...titleSx, fontSize: 34 }}>Lancer un défi</Typography>
       <Label>Étape 2 · Conditions</Label>
 
       {/* Adversaire choisi */}
-      <Box sx={{ border: `1.5px solid ${colors.ink}`, backgroundColor: colors.paperAlt, p: 1.5, mt: 1 }}>
-        <Typography sx={{ fontFamily: fonts.mono, fontSize: 8.5, letterSpacing: '.5px', color: colors.red, textTransform: 'uppercase' }}>
+      <Box sx={{ background: gradients.card, border: `1px solid ${colors.neonLine}`, borderRadius: `${radius.lg}px`, p: 1.5, mt: 1 }}>
+        <Typography sx={{ fontFamily: fonts.action, fontWeight: 600, fontSize: 9, letterSpacing: '0.14em', color: colors.neonText, textTransform: 'uppercase' }}>
           Adversaire
         </Typography>
-        <Typography sx={{ fontFamily: fonts.display, fontSize: 24, color: colors.ink, textTransform: 'uppercase', lineHeight: 1 }}>
-          {opponent?.name}
-        </Typography>
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 12, color: colors.muted, textTransform: 'uppercase', mt: 0.25 }}>
+        <Typography sx={{ ...titleSx, fontSize: 24, mt: 0.25 }}>{opponent?.name}</Typography>
+        <Typography sx={{ fontFamily: fonts.data, fontSize: 12, color: colors.textMuted, textTransform: 'uppercase', mt: 0.25 }}>
           {opponent?.gymName} · {opponent?.weight} · {opponent && recordOf(opponent)}
         </Typography>
       </Box>
 
-      {/* Rounds */}
       <Box sx={{ mt: 3 }}>
         <Label>Rounds</Label>
         <ChoiceGroup options={ROUNDS} value={rounds} onChange={setRounds} />
       </Box>
 
-      {/* Niveau */}
       <Box sx={{ mt: 3 }}>
         <Label>Niveau</Label>
         <ChoiceGroup options={LEVELS} value={level} onChange={setLevel} />
       </Box>
 
-      {/* Lieu & date */}
       <Box sx={{ mt: 3 }}>
         <Label>Lieu & date</Label>
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 13, color: colors.inkSoft, textTransform: 'uppercase' }}>
+        <Typography sx={{ fontFamily: fonts.data, fontSize: 13, color: colors.text, textTransform: 'uppercase' }}>
           À convenir entre les deux clubs après validation.
         </Typography>
       </Box>
 
       {/* Rappel validation encadrée */}
-      <Box sx={{ backgroundColor: colors.ink, p: 1.75, mt: 3 }}>
-        <Typography sx={{ fontFamily: fonts.ui, fontSize: 12.5, fontWeight: 600, color: colors.onInk, textTransform: 'uppercase', letterSpacing: '.5px' }}>
-          Ton défi partira d’abord à <Box component="span" sx={{ color: colors.amber }}>ton coach</Box>, puis au coach adverse. Tu ne signes pas toi-même.
+      <Box sx={{ background: gradients.card, border: `1px solid ${colors.neonLineSoft}`, borderRadius: `${radius.md}px`, p: 1.75, mt: 3 }}>
+        <Typography sx={{ fontFamily: fonts.data, fontSize: 12.5, fontWeight: 600, color: colors.text, textTransform: 'uppercase', letterSpacing: '0.02em', lineHeight: 1.5 }}>
+          Ton défi partira d’abord à <Box component="span" sx={{ color: colors.neonText }}>ton coach</Box>, puis au coach adverse. Tu ne signes pas toi-même.
         </Typography>
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth sx={{ mt: 3, py: 1.75 }} onClick={() => setStep(3)}>
-        Envoyer le défi
-      </Button>
+      <Button fullWidth sx={{ mt: 3 }} onClick={() => setStep(3)}>Envoyer le défi</Button>
     </Screen>
   );
 }
